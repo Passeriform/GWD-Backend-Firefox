@@ -1,7 +1,14 @@
 [package]
 name = "gwd-backend-firefox"
-version = "0.1.0"
+description = "Firefox backend for Godwit-Daemon."
+version = "0.1.3"
 authors = ["Utkarsh Bhardwaj (Passeriform) <passeriform.ub@gmail.com>"]
+readme = "README.md"
+keywords = ["daemon", "backend", "plugin", "service", "internal"]
+categories = ["api-bindings", "caching", "development-tools"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/Passeriform/GWD-Backend-Firefox"
+homepage = "https://www.passeriform.com/prod/GodWit/daemon/backends/firefox"
 edition = "2018"
 
 [lib]
@@ -11,7 +18,7 @@ crate-type = ["cdylib"]
 custom_error = "1.7.1"
 dirs = "2.0.2"
 glob = "0.3.0"
-godwit-daemon = "0.1.3"
+godwit-daemon = { version = "0.1.5", default_features = false, features = ["symbols"] }
 lz4 = "1.23.1"
 serde = { version = "1.0.104", features = ["derive"] }
 serde_json = "1.0.48"
