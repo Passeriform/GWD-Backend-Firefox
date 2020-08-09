@@ -1,7 +1,7 @@
 [package]
 name = "gwd-backend-firefox"
 description = "Firefox backend for Godwit-Daemon."
-version = "0.1.4"
+version = "0.1.5"
 authors = ["Utkarsh Bhardwaj (Passeriform) <passeriform.ub@gmail.com>"]
 readme = "README.md"
 keywords = ["daemon", "backend", "plugin", "service", "internal"]
@@ -12,7 +12,7 @@ homepage = "https://www.passeriform.com/prod/GodWit/daemon/backends/firefox"
 edition = "2018"
 
 [lib]
-crate-type = ["cdylib"]
+crate-type = ["rlib", "cdylib", "staticlib"]
 
 [dependencies]
 custom_error = "1.7.1"
