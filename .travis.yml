@@ -1,0 +1,41 @@
+language: rust
+sudo: required
+cache: cargo
+rust:
+- stable
+- beta
+- nightly
+jobs:
+  allow_failures:
+  - rust: nightly
+  fast_finish: true
+addons:
+  apt:
+    packages:
+    - libcurl4-openssl-dev
+    - libzmq3-dev
+    - libelf-dev
+    - libdw-dev
+    - cmake
+    - gcc
+    - binutils-dev
+after_success: |
+  wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz &&
+  tar xzf master.tar.gz &&
+  cd kcov-master &&
+  mkdir build &&
+  cd build &&
+  cmake .. &&
+  make &&
+  sudo make install &&
+  cd ../.. &&
+  rm -rf kcov-master &&
+  for file in target/debug/gwd_backend_firefox-*[^\.d]; do mkdir -p "target/cov/$(basename $file)"; kcov --exclude-pattern=/.cargo,/usr/lib --verify "target/cov/$(basename $file)" "$file"; done &&
+  bash <(curl -s https://codecov.io/bash) &&
+  echo "Uploaded code coverage"
+deploy:
+  provider: cargo
+  on:
+    tags: true
+  token:
+    secure: NHNrl5MM2punRB0lg5Y/BZX1D4XTjmp4bpJTQuep3+2L4THkVDqQzDQ98U7KKqB4U7mP4EDxtGxm/BuDokWkEoyUIy6CBLRG/upZ1w9341qUYV6nggC72LohCcHmIG7iZPNF6TXQHh8n/eyc339jcY/ZYeMlTEhQHMDaO7LHf6hbC4pMs3vzBaPBQ+/ch+DtsWNi7PrK52tlsvrlZ+Nuy87owwKjFotodoMmnHUeNi4A0DCF9FD/4zoJr8fOLgGem07iSyVWGMrGdSK5IwtlJT/kQhuzBSWPnDK0D6NnNASeh2U59xMa/dT+lEX6Kw4/O15NNGwIzyYuzY0VdTg1ldsCqcfqbh2lsfmGCZV/Jhtyv7qbe5xMzdECH/qzOYVMuktcg7kXkdGf6+Y59hyQMJJ0DPdgXlCX2ZvJPOJcAK0mYGt7jbIVFOKmu3lRbIgIpVvyylda+pwHLQgd/TulJqagf1hZX1/F3g/RIkVuS/BnpBm5Ohw9MeXxil3Bf2vKBsTpwURwzdXxLB+OMkRMnnbGs8545YvvLR474qrvrf1aJNDU4zTaSjMvmdN6hEsYWL7BYuHmeoRgt+nripWsqq/EZbJ6TUdnhh78dd+ugMwINtaSR0SGBSXagPxeTheCSGii8SDLlztbERKNbvQpE50L6x0daDsCG28SoTphlV0=
